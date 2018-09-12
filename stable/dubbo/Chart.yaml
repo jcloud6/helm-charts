@@ -1,0 +1,4 @@
+name: Dubbo
+version: 1.0.0
+description: Dubbo running in Docker, packaged as a springboot application.
+icon: http://{{GIT_HOST}}/root/chart-demo/raw/master/stable/dubbo/icon/logo.jpeg
