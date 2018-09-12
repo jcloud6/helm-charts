@@ -1,0 +1,737 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: config-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-config-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        - name: GIT_HOST
+          value: {{ .Values.GIT_HOST }}
+        name: config-service
+        image: {{ .Values.REGISTRY }}/kbastani-config-service
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    app: "{{ .Values.name }}-config-service"
+  name: config-service
+spec:
+  ports:
+  - port: 8888
+    protocol: TCP
+    targetPort: 8888
+  selector:
+    app: "{{ .Values.name }}-config-service"
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hystrix-dashboard
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-hystrix-dashboard"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        name: hystrix-dashboard
+        image: {{ .Values.REGISTRY }}/kbastani-hystrix-dashboard
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":6161,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":6161}]'
+  labels:
+    app: "{{ .Values.name }}-hystrix-dashboard"
+  name: hystrix-dashboard
+spec:
+  ports:
+  - port: 6161
+    protocol: TCP
+    targetPort: 6161
+  selector:
+    app: "{{ .Values.name }}-hystrix-dashboard"
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: zipkin
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-zipkin"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        name: zipkin
+        image: {{ .Values.REGISTRY }}/zipkin:2
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":9411,"protocol":"tcp","name":"{{ .Values.ALB }}","port":9411}]'
+  labels:
+    app: "{{ .Values.name }}-zipkin"
+  name: zipkin
+spec:
+  ports:
+  - port: 9411
+    protocol: TCP
+    targetPort: 9411
+  selector:
+    app: "{{ .Values.name }}-zipkin"
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-mysql"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        - name: MYSQL_ROOT_PASSWORD
+          value: dbpass
+        - name: MYSQL_DATABASE
+          value: dev
+        name: mysql
+        image: {{ .Values.REGISTRY }}/mysql:5.7
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    app: "{{ .Values.name }}-mysql"
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: "{{ .Values.name }}-mysql"
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: neo4j
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-neo4j"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        - name: NEO4J_AUTH
+          value: none
+        name: neo4j
+        image: {{ .Values.REGISTRY }}/neo4j:3.3
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+        app: "{{ .Values.name }}-neo4j"
+  name: neo4j
+spec:
+  ports:
+  - port: 7474
+    protocol: TCP
+    targetPort: 7474
+  selector:
+    app: "{{ .Values.name }}-neo4j"
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-mongo"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        name: mongo
+        image: {{ .Values.REGISTRY }}/mongo:3.3
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    app: "{{ .Values.name }}-mongo"
+  name: mongo
+spec:
+  ports:
+  - port: 27017
+    protocol: TCP
+    targetPort: 27017
+  selector:
+    app: "{{ .Values.name }}-mongo"
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-redis"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        name: redis
+        image: {{ .Values.REGISTRY }}/redis:3.0
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "{{ .Values.name }}-redis"
+  name: redis
+spec:
+  ports:
+  - port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: "{{ .Values.name }}-redis"
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: user-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-user-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        name: user-service
+        image: {{ .Values.REGISTRY }}/kbastani-user-service
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8181,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":8181}]'
+  labels:
+    app: "{{ .Values.name }}-user-service"
+  name: user-service
+spec:
+  ports:
+  - port: 8181
+    protocol: TCP
+    targetPort: 8181
+  selector:
+    app: "{{ .Values.name }}-user-service"
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: discovery-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-discovery-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        name: discovery-service
+        image: {{ .Values.REGISTRY }}/kbastani-discovery-service
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8761,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":8761}]'
+  labels:
+    app: "{{ .Values.name }}-discovery-service"
+  name: discovery-service
+spec:
+  ports:
+  - port: 8761
+    protocol: TCP
+    targetPort: 8761
+  selector:
+    app: "{{ .Values.name }}-discovery-service"
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: edge-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-edge-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        name: edge-service
+        image: {{ .Values.REGISTRY }}/kbastani-edge-service
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":9999,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":9999}]'
+  labels:
+    app: "{{ .Values.name }}-edge-service"
+  name: edge-service
+spec:
+  ports:
+  - port: 9999
+    protocol: TCP
+    targetPort: 9999
+  selector:
+    app: "{{ .Values.name }}-edge-service"
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: account-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-account-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        name: account-service
+        image: {{ .Values.REGISTRY }}/kbastani-account-service
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17005}]'
+  labels:
+    app: "{{ .Values.name }}-account-service"
+  name: account-service
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: "{{ .Values.name }}-account-service"
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: inventory-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-inventory-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        name: inventory-service
+        image: {{ .Values.REGISTRY }}/kbastani-inventory-service
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17004}]'
+  labels:
+    app: "{{ .Values.name }}-inventory-service"
+  name: inventory-service
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: "{{ .Values.name }}-inventory-service"
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-order-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        name: order-service
+        image: {{ .Values.REGISTRY }}/bastani-order-service
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17003}]'
+  labels:
+    app: "{{ .Values.name }}-order-service"
+  name: order-service
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: "{{ .Values.name }}-order-service"
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: catalog-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-catalog-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        name: catalog-service
+        image: {{ .Values.REGISTRY }}/kbastani-catalog-service
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17002}]'
+  labels:
+    app: "{{ .Values.name }}-catalog-service"
+  name: catalog-service
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: "{{ .Values.name }}-catalog-service"
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: shopping-cart-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-shopping-cart-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        name: shopping-cart-service
+        image: {{ .Values.REGISTRY }}/kbastani-shopping-cart-service
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17001}]'
+  labels:
+    app: "{{ .Values.name }}-shopping-cart-service"
+  name: shopping-cart-service
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: "{{ .Values.name }}-shopping-cart-service"
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: online-store-web
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}-online-store-web"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: docker
+        - name: ALB_IP
+          value: {{ .Values.ALB_IP }}
+        name: online-store-web
+        image: {{ .Values.REGISTRY }}/kbastani-online-store-web
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8787,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":8787}]'
+  labels:
+    app: "{{ .Values.name }}-online-store-web"
+  name: online-store-web
+spec:
+  ports:
+  - port: 8787
+    protocol: TCP
+    targetPort: 8787
+  selector:
+    app: "{{ .Values.name }}-online-store-web"
+  sessionAffinity: None
+  type: ClusterIP
+
+
