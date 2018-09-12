@@ -67,10 +67,6 @@ spec:
         name: hystrix-dashboard
         image: {{ .Values.REGISTRY }}/kbastani-hystrix-dashboard
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -87,7 +83,6 @@ spec:
     targetPort: 6161
   selector:
     app: "{{ .Values.name }}-hystrix-dashboard"
-  sessionAffinity: None
   type: ClusterIP
 
 ---
@@ -113,10 +108,6 @@ spec:
         name: zipkin
         image: {{ .Values.REGISTRY }}/zipkin:2
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -133,7 +124,6 @@ spec:
     targetPort: 9411
   selector:
     app: "{{ .Values.name }}-zipkin"
-  sessionAffinity: None
   type: ClusterIP
 ---
 apiVersion: apps/v1beta1
@@ -162,10 +152,6 @@ spec:
         name: mysql
         image: {{ .Values.REGISTRY }}/mysql:5.7
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -181,7 +167,6 @@ spec:
     targetPort: 3306
   selector:
     app: "{{ .Values.name }}-mysql"
-  sessionAffinity: None
   type: ClusterIP
 
 ---
@@ -209,10 +194,6 @@ spec:
         name: neo4j
         image: {{ .Values.REGISTRY }}/neo4j:3.3
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -228,7 +209,6 @@ spec:
     targetPort: 7474
   selector:
     app: "{{ .Values.name }}-neo4j"
-  sessionAffinity: None
   type: ClusterIP
 
 ---
@@ -254,10 +234,6 @@ spec:
         name: mongo
         image: {{ .Values.REGISTRY }}/mongo:3.3
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -273,9 +249,7 @@ spec:
     targetPort: 27017
   selector:
     app: "{{ .Values.name }}-mongo"
-  sessionAffinity: None
   type: ClusterIP
-
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -299,10 +273,6 @@ spec:
         name: redis
         image: {{ .Values.REGISTRY }}/redis:3.0
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -317,9 +287,7 @@ spec:
     targetPort: 6379
   selector:
     app: "{{ .Values.name }}-redis"
-  sessionAffinity: None
   type: ClusterIP
-
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -343,10 +311,6 @@ spec:
         name: user-service
         image: {{ .Values.REGISTRY }}/kbastani-user-service
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -363,7 +327,6 @@ spec:
     targetPort: 8181
   selector:
     app: "{{ .Values.name }}-user-service"
-  sessionAffinity: None
   type: ClusterIP
 
 ---
@@ -389,10 +352,6 @@ spec:
         name: discovery-service
         image: {{ .Values.REGISTRY }}/kbastani-discovery-service
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -409,9 +368,7 @@ spec:
     targetPort: 8761
   selector:
     app: "{{ .Values.name }}-discovery-service"
-  sessionAffinity: None
   type: ClusterIP
-
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -435,10 +392,6 @@ spec:
         name: edge-service
         image: {{ .Values.REGISTRY }}/kbastani-edge-service
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -455,9 +408,7 @@ spec:
     targetPort: 9999
   selector:
     app: "{{ .Values.name }}-edge-service"
-  sessionAffinity: None
   type: ClusterIP
-
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -481,10 +432,6 @@ spec:
         name: account-service
         image: {{ .Values.REGISTRY }}/kbastani-account-service
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -501,9 +448,7 @@ spec:
     targetPort: 8080
   selector:
     app: "{{ .Values.name }}-account-service"
-  sessionAffinity: None
   type: ClusterIP
-
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -527,10 +472,6 @@ spec:
         name: inventory-service
         image: {{ .Values.REGISTRY }}/kbastani-inventory-service
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -547,9 +488,7 @@ spec:
     targetPort: 8080
   selector:
     app: "{{ .Values.name }}-inventory-service"
-  sessionAffinity: None
   type: ClusterIP
-
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -571,12 +510,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: order-service
-        image: {{ .Values.REGISTRY }}/bastani-order-service
+        image: {{ .Values.REGISTRY }}/kbastani-order-service
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -593,9 +528,7 @@ spec:
     targetPort: 8080
   selector:
     app: "{{ .Values.name }}-order-service"
-  sessionAffinity: None
   type: ClusterIP
-
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -619,10 +552,6 @@ spec:
         name: catalog-service
         image: {{ .Values.REGISTRY }}/kbastani-catalog-service
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -639,9 +568,7 @@ spec:
     targetPort: 8080
   selector:
     app: "{{ .Values.name }}-catalog-service"
-  sessionAffinity: None
   type: ClusterIP
-
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -665,10 +592,6 @@ spec:
         name: shopping-cart-service
         image: {{ .Values.REGISTRY }}/kbastani-shopping-cart-service
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -685,9 +608,7 @@ spec:
     targetPort: 8080
   selector:
     app: "{{ .Values.name }}-shopping-cart-service"
-  sessionAffinity: None
   type: ClusterIP
-
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -711,10 +632,6 @@ spec:
         name: online-store-web
         image: {{ .Values.REGISTRY }}/kbastani-online-store-web
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2G
 ---
 apiVersion: v1
 kind: Service
@@ -731,7 +648,4 @@ spec:
     targetPort: 8787
   selector:
     app: "{{ .Values.name }}-online-store-web"
-  sessionAffinity: None
   type: ClusterIP
-
-
