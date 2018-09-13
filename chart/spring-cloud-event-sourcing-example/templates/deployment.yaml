@@ -69,7 +69,7 @@ spec:
         - name: ALB_IP
           value: "{{ .Values.ALB_IP }}"
         name: hystrix-dashboard
-        image: "{{ .Values.Image_hystrix-dashboard }}"
+        image: "{{ .Values.Image_hystrixdashboard }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
@@ -594,7 +594,7 @@ spec:
         - name: ALB_IP
           value: "{{ .Values.ALB_IP }}"
         name: shopping-cart-service
-        image: "{{ .Values.Image_shopping-cart }}"
+        image: "{{ .Values.Image_shoppingcart }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
@@ -634,7 +634,7 @@ spec:
         - name: ALB_IP
           value: "{{ .Values.ALB_IP }}"
         name: online-store-web
-        image: "{{ .Values.Image_online-store-web }}"
+        image: "{{ .Values.Image_onlinestoreweb }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1

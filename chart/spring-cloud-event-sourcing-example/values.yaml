@@ -3,7 +3,7 @@ APP_NAME: spring-cloud-event-sourcing-example
 
 # 镜像地址
 Image_config: "10.0.160.9:5000/kbastani-config-service"
-Image_hystrix-dashboard: "10.0.160.9:5000/kbastani-hystrix-dashboard"
+Image_hystrixdashboard: "10.0.160.9:5000/kbastani-hystrix-dashboard"
 Image_zipkin: "10.0.160.9:5000/zipkin:2"
 Image_mysql: "10.0.160.9:5000/mysql:5.7"
 Image_neo4j: "10.0.160.9:5000/neo4j:3.3"
@@ -16,8 +16,8 @@ Image_account: "10.0.160.9:5000/kbastani-account-service"
 Image_inventory: "10.0.160.9:5000/kbastani-inventory-service"
 Image_order: "10.0.160.9:5000/kbastani-order-service"
 Image_catalog: "10.0.160.9:5000/kbastani-catalog-service"
-Image_shopping-cart: "10.0.160.9:5000/kbastani-shopping-cart-service"
-Image_online-store-web: "10.0.160.9:5000/kbastani-online-store-web"
+Image_shoppingcart: "10.0.160.9:5000/kbastani-shopping-cart-service"
+Image_onlinestoreweb: "10.0.160.9:5000/kbastani-online-store-web"
 
 # 镜像下载策略：IfNotPresent（本地没有即下载）、Always（始终重新下载）
 imagePullPolicy: IfNotPresent
