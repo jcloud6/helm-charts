@@ -29,7 +29,7 @@ ALB_NAME: nginx-10-0-160-9
 ALB_IP: 10.0.160.9
 
 # Config Server 使用的 Git 仓库地址
-GIT_URL: https://github.com/jcloud6/spring-cloud-event-sourcing-config
+GIT_URL: "https://github.com/jcloud6/spring-cloud-event-sourcing-config"
 
 # Config Server 使用的 Git 仓库账号
 GIT_USER: alauda 
