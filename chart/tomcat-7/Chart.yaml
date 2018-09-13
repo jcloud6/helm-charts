@@ -1,5 +1,5 @@
 name: Tomcat 7
 version: 1.0.0
 description: Apache Tomcat is an open source implementation of the Java Servlet and JavaServer Pages technologies
-icon: https://github.com/jcloud6/helm-charts/chart/tomcat-7/icon/tomcat.png
+icon: https://raw.githubusercontent.com/jcloud6/helm-charts/master/chart/tomcat-7/icon/tomcat.png
 status: COMING

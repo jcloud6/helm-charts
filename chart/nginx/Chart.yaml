@@ -1,4 +1,4 @@
 name: Nginx
 version: 1.0.0
 description: Official build of Nginx.
-icon: https://github.com/jcloud6/helm-charts/blob/master/chart/nginx/icon/logo.png
+icon: https://raw.githubusercontent.com/jcloud6/helm-charts/master/chart/nginx/icon/logo.png

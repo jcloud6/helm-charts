@@ -1,4 +1,4 @@
 name: Dubbo
 version: 1.0.0
 description: Dubbo running in Docker, packaged as a springboot application.
-icon: https://github.com/jcloud6/helm-charts/blob/master/chart/dubbo/icon/logo.jpeg
+icon: https://raw.githubusercontent.com/jcloud6/helm-charts/master/chart/dubbo/icon/logo.jpeg

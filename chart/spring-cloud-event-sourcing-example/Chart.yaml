@@ -1,4 +1,4 @@
 name: spring-cloud-event-sourcing-example
 version: 1.0.0
 description: spring-cloud-event-sourcing-example
-icon: https://github.com/jcloud6/helm-charts/blob/master/chart/spring-cloud-event-sourcing-example/icon/logo.jpg
+icon: https://raw.githubusercontent.com/jcloud6/helm-charts/master/chart/spring-cloud-event-sourcing-example/icon/logo.jpg
