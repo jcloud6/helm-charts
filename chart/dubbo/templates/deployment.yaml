@@ -37,6 +37,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: "{{ .Values.name }}-admin"
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":28001}]'
   labels:
     app: "{{ .Values.name }}-admin"
 spec:
@@ -96,6 +98,21 @@ spec:
           value: accept
         - name: ZOOKEEPER_SERVER
           value: {{ .Values.name }}-zookeeper
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Values.name }}-consumer"
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8899,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":28002}]'
+  labels:
+    app: "{{ .Values.name }}-consumer"
+spec:
+  ports:
+    - port: 8899
+      targetPort: 8899
+  selector:
+    app: "{{ .Values.name }}-consumer"
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment

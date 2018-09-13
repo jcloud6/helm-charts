@@ -1,6 +1,11 @@
+# 应用名称
 name: dubbo
+
+# 镜像地址
 imageRegistry_admin: 10.0.160.9:5000/dubbo:admin
 imageRegistry_zookeeper: 10.0.160.9:5000/dubbo:zookeeper
 imageRegistry_producer: 10.0.160.9:5000/dubbo:producer
 imageRegistry_consumer: 10.0.160.9:5000/dubbo:consumer
 
+# ALB 名称
+ALB_NAME: nginx-10-0-160-9
