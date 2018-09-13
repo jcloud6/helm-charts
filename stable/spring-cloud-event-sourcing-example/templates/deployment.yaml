@@ -1,0 +1,655 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: config-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-config-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        - name: GIT_URL
+          value: "{{ .Values.GIT_URL }}"
+        - name: GIT_USER
+          value: "{{ .Values.GIT_USER }}"
+        - name: GIT_PASS
+          value: "{{ .Values.GIT_PASS }}"
+        name: config-service
+        image: "{{ .Values.Image_config }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    app: "{{ .Values.APP_NAME }}-config-service"
+  name: config-service
+spec:
+  ports:
+  - port: 8888
+    protocol: TCP
+    targetPort: 8888
+  selector:
+    app: "{{ .Values.APP_NAME }}-config-service"
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hystrix-dashboard
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-hystrix-dashboard"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        name: hystrix-dashboard
+        image: "{{ .Values.Image_hystrixdashboard }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":6161,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":6161}]'
+  labels:
+    app: "{{ .Values.APP_NAME }}-hystrix-dashboard"
+  name: hystrix-dashboard
+spec:
+  ports:
+  - port: 6161
+    protocol: TCP
+    targetPort: 6161
+  selector:
+    app: "{{ .Values.APP_NAME }}-hystrix-dashboard"
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: zipkin
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-zipkin"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        name: zipkin
+        image: "{{ .Values.Image_zipkin }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":9411,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":9411}]'
+  labels:
+    app: "{{ .Values.APP_NAME }}-zipkin"
+  name: zipkin
+spec:
+  ports:
+  - port: 9411
+    protocol: TCP
+    targetPort: 9411
+  selector:
+    app: "{{ .Values.APP_NAME }}-zipkin"
+  type: ClusterIP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-mysql"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        - name: MYSQL_ROOT_PASSWORD
+          value: dbpass
+        - name: MYSQL_DATABASE
+          value: dev
+        name: mysql
+        image: "{{ .Values.Image_mysql }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    app: "{{ .Values.APP_NAME }}-mysql"
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: "{{ .Values.APP_NAME }}-mysql"
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: neo4j
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-neo4j"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        - name: NEO4J_AUTH
+          value: none
+        name: neo4j
+        image: "{{ .Values.Image_neo4j }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+        app: "{{ .Values.APP_NAME }}-neo4j"
+  name: neo4j
+spec:
+  ports:
+  - port: 7474
+    protocol: TCP
+    targetPort: 7474
+  selector:
+    app: "{{ .Values.APP_NAME }}-neo4j"
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-mongo"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        name: mongo
+        image: "{{ .Values.Image_mongo }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    app: "{{ .Values.APP_NAME }}-mongo"
+  name: mongo
+spec:
+  ports:
+  - port: 27017
+    protocol: TCP
+    targetPort: 27017
+  selector:
+    app: "{{ .Values.APP_NAME }}-mongo"
+  type: ClusterIP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-redis"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        name: redis
+        image: "{{ .Values.Image_redis }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "{{ .Values.APP_NAME }}-redis"
+  name: redis
+spec:
+  ports:
+  - port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: "{{ .Values.APP_NAME }}-redis"
+  type: ClusterIP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: user-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-user-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        name: user-service
+        image: "{{ .Values.Image_user }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8181,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":8181}]'
+  labels:
+    app: "{{ .Values.APP_NAME }}-user-service"
+  name: user-service
+spec:
+  ports:
+  - port: 8181
+    protocol: TCP
+    targetPort: 8181
+  selector:
+    app: "{{ .Values.APP_NAME }}-user-service"
+  type: ClusterIP
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: discovery-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-discovery-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        name: discovery-service
+        image: "{{ .Values.Image_discovery }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8761,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":8761}]'
+  labels:
+    app: "{{ .Values.APP_NAME }}-discovery-service"
+  name: discovery-service
+spec:
+  ports:
+  - port: 8761
+    protocol: TCP
+    targetPort: 8761
+  selector:
+    app: "{{ .Values.APP_NAME }}-discovery-service"
+  type: ClusterIP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: edge-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-edge-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        name: edge-service
+        image: "{{ .Values.Image_edge }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":9999,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":9999}]'
+  labels:
+    app: "{{ .Values.APP_NAME }}-edge-service"
+  name: edge-service
+spec:
+  ports:
+  - port: 9999
+    protocol: TCP
+    targetPort: 9999
+  selector:
+    app: "{{ .Values.APP_NAME }}-edge-service"
+  type: ClusterIP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: account-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-account-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        name: account-service
+        image: "{{ .Values.Image_account }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17005}]'
+  labels:
+    app: "{{ .Values.APP_NAME }}-account-service"
+  name: account-service
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: "{{ .Values.APP_NAME }}-account-service"
+  type: ClusterIP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: inventory-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-inventory-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        name: inventory-service
+        image: "{{ .Values.Image_inventory }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17004}]'
+  labels:
+    app: "{{ .Values.APP_NAME }}-inventory-service"
+  name: inventory-service
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: "{{ .Values.APP_NAME }}-inventory-service"
+  type: ClusterIP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-order-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        name: order-service
+        image: "{{ .Values.Image_order }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17003}]'
+  labels:
+    app: "{{ .Values.APP_NAME }}-order-service"
+  name: order-service
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: "{{ .Values.APP_NAME }}-order-service"
+  type: ClusterIP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: catalog-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-catalog-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        name: catalog-service
+        image: "{{ .Values.Image_catalog }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17002}]'
+  labels:
+    app: "{{ .Values.APP_NAME }}-catalog-service"
+  name: catalog-service
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: "{{ .Values.APP_NAME }}-catalog-service"
+  type: ClusterIP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: shopping-cart-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-shopping-cart-service"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        name: shopping-cart-service
+        image: "{{ .Values.Image_shoppingcart }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17001}]'
+  labels:
+    app: "{{ .Values.APP_NAME }}-shopping-cart-service"
+  name: shopping-cart-service
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: "{{ .Values.APP_NAME }}-shopping-cart-service"
+  type: ClusterIP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: online-store-web
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.APP_NAME }}-online-store-web"
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
+        - name: ALB_IP
+          value: "{{ .Values.ALB_IP }}"
+        name: online-store-web
+        image: "{{ .Values.Image_onlinestoreweb }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    loadbalancer.alauda.io/bind: '[{"container_port":8787,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":8787}]'
+  labels:
+    app: "{{ .Values.APP_NAME }}-online-store-web"
+  name: online-store-web
+spec:
+  ports:
+  - port: 8787
+    protocol: TCP
+    targetPort: 8787
+  selector:
+    app: "{{ .Values.APP_NAME }}-online-store-web"
+  type: ClusterIP

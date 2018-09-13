@@ -1,4 +1,4 @@
-name: Dubbo
+name: spring-cloud-event-sourcing-example
 version: 1.0.0
-description: Dubbo running in Docker, packaged as a springboot application.
+description: spring-cloud-event-sourcing-example
 icon: http://{{GIT_HOST}}/root/helm-charts/raw/master/stable/dubbo/icon/logo.jpeg

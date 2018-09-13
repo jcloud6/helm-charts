@@ -1,0 +1,41 @@
+# 应用名称
+APP_NAME: spring-cloud-event-sourcing-example
+
+# 镜像地址
+Image_config: "{{REGISTRY}}/kbastani-config-service"
+Image_hystrixdashboard: "{{REGISTRY}}/kbastani-hystrix-dashboard"
+Image_zipkin: "{{REGISTRY}}/zipkin:2"
+Image_mysql: "{{REGISTRY}}/mysql:5.7"
+Image_neo4j: "{{REGISTRY}}/neo4j:3.3"
+Image_mongo: "{{REGISTRY}}/mongo:3.3"
+Image_redis: "{{REGISTRY}}/redis:3.0"
+Image_user: "{{REGISTRY}}/kbastani-user-service"
+Image_discovery: "{{REGISTRY}}/kbastani-discovery-service"
+Image_edge: "{{REGISTRY}}/kbastani-edge-service"
+Image_account: "{{REGISTRY}}/kbastani-account-service"
+Image_inventory: "{{REGISTRY}}/kbastani-inventory-service"
+Image_order: "{{REGISTRY}}/kbastani-order-service"
+Image_catalog: "{{REGISTRY}}/kbastani-catalog-service"
+Image_shoppingcart: "{{REGISTRY}}/kbastani-shopping-cart-service"
+Image_onlinestoreweb: "{{REGISTRY}}/kbastani-online-store-web"
+
+# 镜像下载策略：IfNotPresent（本地没有即下载）、Always（始终重新下载）
+imagePullPolicy: IfNotPresent
+
+# ALB 名称
+ALB_NAME: "{{ALB_NAME}}"
+
+# ALB IP 地址
+ALB_IP: "{{ALB_IP}}"
+
+# Config Server 使用的 Git 仓库地址
+GIT_URL: "https://{{GIT_HOST}}/spring-cloud-event-sourcing-config"
+
+# Config Server 使用的 Git 仓库账号
+GIT_USER: "{{GIT_USER}}"
+
+# Config Server 使用的 Git 仓库密码
+GIT_PASS: "{{GIT_PASS}}"
+
+# 应用加载的配置类型
+SPRING_PROFILES_ACTIVE: docker
