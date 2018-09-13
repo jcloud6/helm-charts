@@ -2,5 +2,7 @@ name: spring-cloud-event-sourcing-example
 REGISTRY: 10.0.160.9:5000
 ALB_NAME: nginx-10-0-160-9
 ALB_IP: 10.0.160.9
-GIT_HOST: 10.0.160.9:9988
-
+GIT_URL: http://10.0.160.9:9988/root/config-server
+GIT_USER: root
+GIT_PASS: alauda1234
+SPRING_PROFILES_ACTIVE: docker

@@ -15,11 +15,15 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
-        - name: GIT_HOST
-          value: {{ .Values.GIT_HOST }}
+        - name: GIT_URL
+          value: {{ .Values.GIT_URL }}
+        - name: GIT_USER
+          value: {{ .Values.GIT_USER }}
+        - name: GIT_PASS
+          value: {{ .Values.GIT_PASS }}
         name: config-service
         image: {{ .Values.REGISTRY }}/kbastani-config-service
         imagePullPolicy: IfNotPresent
@@ -61,7 +65,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: hystrix-dashboard
@@ -102,7 +106,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: zipkin
@@ -142,7 +146,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         - name: MYSQL_ROOT_PASSWORD
@@ -186,7 +190,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         - name: NEO4J_AUTH
@@ -228,7 +232,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: mongo
@@ -267,7 +271,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: redis
@@ -305,7 +309,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: user-service
@@ -346,7 +350,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: discovery-service
@@ -386,7 +390,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: edge-service
@@ -426,7 +430,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: account-service
@@ -466,7 +470,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: inventory-service
@@ -506,7 +510,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: order-service
@@ -546,7 +550,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: catalog-service
@@ -586,7 +590,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: shopping-cart-service
@@ -626,7 +630,7 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: docker
+          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: online-store-web
