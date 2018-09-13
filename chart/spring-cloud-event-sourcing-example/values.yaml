@@ -32,10 +32,10 @@ ALB_IP: 10.0.160.9
 GIT_URL: https://github.com/jcloud6/spring-cloud-event-sourcing-config
 
 # Config Server 使用的 Git 仓库账号
-GIT_USER: 
+GIT_USER: [] 
 
 # Config Server 使用的 Git 仓库密码
-GIT_PASS: 
+GIT_PASS: []
 
 # 应用加载的配置类型
 SPRING_PROFILES_ACTIVE: docker
