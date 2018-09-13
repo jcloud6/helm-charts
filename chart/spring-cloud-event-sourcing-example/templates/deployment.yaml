@@ -15,18 +15,18 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         - name: GIT_URL
-          value: {{ .Values.GIT_URL }}
+          value: "{{ .Values.GIT_URL }}"
         - name: GIT_USER
-          value: {{ .Values.GIT_USER }}
+          value: "{{ .Values.GIT_USER }}"
         - name: GIT_PASS
-          value: {{ .Values.GIT_PASS }}
+          value: "{{ .Values.GIT_PASS }}"
         name: config-service
-        image: {{ .Values.Image_config }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_config }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
         resources:
           requests:
             cpu: "1"
@@ -65,12 +65,12 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         name: hystrix-dashboard
-        image: {{ .Values.Image_hystrix-dashboard }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_hystrix-dashboard }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -106,12 +106,12 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         name: zipkin
-        image: {{ .Values.Image_zipkin }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_zipkin }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -146,16 +146,16 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         - name: MYSQL_ROOT_PASSWORD
           value: dbpass
         - name: MYSQL_DATABASE
           value: dev
         name: mysql
-        image: {{ .Values.Image_mysql }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_mysql }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -190,14 +190,14 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         - name: NEO4J_AUTH
           value: none
         name: neo4j
-        image: {{ .Values.Image_neo4j }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_neo4j }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -232,12 +232,12 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         name: mongo
-        image: {{ .Values.Image_mongo }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_mongo }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -271,12 +271,12 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         name: redis
-        image: {{ .Values.Image_redis }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_redis }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -309,12 +309,12 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         name: user-service
-        image: {{ .Values.Image_user }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_user }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -350,12 +350,12 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         name: discovery-service
-        image: {{ .Values.Image_discovery }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_discovery }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -390,12 +390,12 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         name: edge-service
-        image: {{ .Values.Image_edge }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_edge }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -430,12 +430,12 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         name: account-service
-        image: {{ .Values.Image_account }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_account }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -470,12 +470,12 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         name: inventory-service
-        image: {{ .Values.Image_inventory }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_inventory }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -510,12 +510,12 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         name: order-service
-        image: {{ .Values.Image_order }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_order }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -550,12 +550,12 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         name: catalog-service
-        image: {{ .Values.Image_catalog }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_catalog }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -590,12 +590,12 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         name: shopping-cart-service
-        image: {{ .Values.Image_shopping-cart }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_shopping-cart }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
@@ -630,12 +630,12 @@ spec:
       containers:
       - env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.SPRING_PROFILES_ACTIVE }}
+          value: "{{ .Values.SPRING_PROFILES_ACTIVE }}"
         - name: ALB_IP
-          value: {{ .Values.ALB_IP }}
+          value: "{{ .Values.ALB_IP }}"
         name: online-store-web
-        image: {{ .Values.Image_online-store-web }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: "{{ .Values.Image_online-store-web }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
 ---
 apiVersion: v1
 kind: Service
