@@ -25,8 +25,8 @@ spec:
         - name: GIT_PASS
           value: {{ .Values.GIT_PASS }}
         name: config-service
-        image: {{ .Values.REGISTRY }}/kbastani-config-service
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_config }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
         resources:
           requests:
             cpu: "1"
@@ -69,8 +69,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: hystrix-dashboard
-        image: {{ .Values.REGISTRY }}/kbastani-hystrix-dashboard
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_hystrix-dashboard }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -110,8 +110,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: zipkin
-        image: {{ .Values.REGISTRY }}/zipkin:2
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_zipkin }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -154,8 +154,8 @@ spec:
         - name: MYSQL_DATABASE
           value: dev
         name: mysql
-        image: {{ .Values.REGISTRY }}/mysql:5.7
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_mysql }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -196,8 +196,8 @@ spec:
         - name: NEO4J_AUTH
           value: none
         name: neo4j
-        image: {{ .Values.REGISTRY }}/neo4j:3.3
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_neo4j }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -236,8 +236,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: mongo
-        image: {{ .Values.REGISTRY }}/mongo:3.3
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_mongo }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -275,8 +275,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: redis
-        image: {{ .Values.REGISTRY }}/redis:3.0
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_redis }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -313,8 +313,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: user-service
-        image: {{ .Values.REGISTRY }}/kbastani-user-service
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_user }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -354,8 +354,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: discovery-service
-        image: {{ .Values.REGISTRY }}/kbastani-discovery-service
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_discovery }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -394,8 +394,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: edge-service
-        image: {{ .Values.REGISTRY }}/kbastani-edge-service
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_edge }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -434,8 +434,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: account-service
-        image: {{ .Values.REGISTRY }}/kbastani-account-service
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_account }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -474,8 +474,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: inventory-service
-        image: {{ .Values.REGISTRY }}/kbastani-inventory-service
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_inventory }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -514,8 +514,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: order-service
-        image: {{ .Values.REGISTRY }}/kbastani-order-service
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_order }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -554,8 +554,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: catalog-service
-        image: {{ .Values.REGISTRY }}/kbastani-catalog-service
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_catalog }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -594,8 +594,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: shopping-cart-service
-        image: {{ .Values.REGISTRY }}/kbastani-shopping-cart-service
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_shopping-cart }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
@@ -634,8 +634,8 @@ spec:
         - name: ALB_IP
           value: {{ .Values.ALB_IP }}
         name: online-store-web
-        image: {{ .Values.REGISTRY }}/kbastani-online-store-web
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.Image_online-store-web }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: Service
