@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-config-service"
+        app: "{{ .Values.APP_NAME }}-config-service"
     spec:
       containers:
       - env:
@@ -37,7 +37,7 @@ kind: Service
 metadata:
   annotations:
   labels:
-    app: "{{ .Values.name }}-config-service"
+    app: "{{ .Values.APP_NAME }}-config-service"
   name: config-service
 spec:
   ports:
@@ -45,7 +45,7 @@ spec:
     protocol: TCP
     targetPort: 8888
   selector:
-    app: "{{ .Values.name }}-config-service"
+    app: "{{ .Values.APP_NAME }}-config-service"
   sessionAffinity: None
   type: ClusterIP
 ---
@@ -60,7 +60,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-hystrix-dashboard"
+        app: "{{ .Values.APP_NAME }}-hystrix-dashboard"
     spec:
       containers:
       - env:
@@ -78,7 +78,7 @@ metadata:
   annotations:
     loadbalancer.alauda.io/bind: '[{"container_port":6161,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":6161}]'
   labels:
-    app: "{{ .Values.name }}-hystrix-dashboard"
+    app: "{{ .Values.APP_NAME }}-hystrix-dashboard"
   name: hystrix-dashboard
 spec:
   ports:
@@ -86,7 +86,7 @@ spec:
     protocol: TCP
     targetPort: 6161
   selector:
-    app: "{{ .Values.name }}-hystrix-dashboard"
+    app: "{{ .Values.APP_NAME }}-hystrix-dashboard"
   type: ClusterIP
 
 ---
@@ -101,7 +101,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-zipkin"
+        app: "{{ .Values.APP_NAME }}-zipkin"
     spec:
       containers:
       - env:
@@ -119,7 +119,7 @@ metadata:
   annotations:
     loadbalancer.alauda.io/bind: '[{"container_port":9411,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":9411}]'
   labels:
-    app: "{{ .Values.name }}-zipkin"
+    app: "{{ .Values.APP_NAME }}-zipkin"
   name: zipkin
 spec:
   ports:
@@ -127,7 +127,7 @@ spec:
     protocol: TCP
     targetPort: 9411
   selector:
-    app: "{{ .Values.name }}-zipkin"
+    app: "{{ .Values.APP_NAME }}-zipkin"
   type: ClusterIP
 ---
 apiVersion: apps/v1beta1
@@ -141,7 +141,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-mysql"
+        app: "{{ .Values.APP_NAME }}-mysql"
     spec:
       containers:
       - env:
@@ -162,7 +162,7 @@ kind: Service
 metadata:
   annotations:
   labels:
-    app: "{{ .Values.name }}-mysql"
+    app: "{{ .Values.APP_NAME }}-mysql"
   name: mysql
 spec:
   ports:
@@ -170,7 +170,7 @@ spec:
     protocol: TCP
     targetPort: 3306
   selector:
-    app: "{{ .Values.name }}-mysql"
+    app: "{{ .Values.APP_NAME }}-mysql"
   type: ClusterIP
 
 ---
@@ -185,7 +185,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-neo4j"
+        app: "{{ .Values.APP_NAME }}-neo4j"
     spec:
       containers:
       - env:
@@ -204,7 +204,7 @@ kind: Service
 metadata:
   annotations:
   labels:
-        app: "{{ .Values.name }}-neo4j"
+        app: "{{ .Values.APP_NAME }}-neo4j"
   name: neo4j
 spec:
   ports:
@@ -212,7 +212,7 @@ spec:
     protocol: TCP
     targetPort: 7474
   selector:
-    app: "{{ .Values.name }}-neo4j"
+    app: "{{ .Values.APP_NAME }}-neo4j"
   type: ClusterIP
 
 ---
@@ -227,7 +227,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-mongo"
+        app: "{{ .Values.APP_NAME }}-mongo"
     spec:
       containers:
       - env:
@@ -244,7 +244,7 @@ kind: Service
 metadata:
   annotations:
   labels:
-    app: "{{ .Values.name }}-mongo"
+    app: "{{ .Values.APP_NAME }}-mongo"
   name: mongo
 spec:
   ports:
@@ -252,7 +252,7 @@ spec:
     protocol: TCP
     targetPort: 27017
   selector:
-    app: "{{ .Values.name }}-mongo"
+    app: "{{ .Values.APP_NAME }}-mongo"
   type: ClusterIP
 ---
 apiVersion: apps/v1beta1
@@ -266,7 +266,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-redis"
+        app: "{{ .Values.APP_NAME }}-redis"
     spec:
       containers:
       - env:
@@ -282,7 +282,7 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: "{{ .Values.name }}-redis"
+    app: "{{ .Values.APP_NAME }}-redis"
   name: redis
 spec:
   ports:
@@ -290,7 +290,7 @@ spec:
     protocol: TCP
     targetPort: 6379
   selector:
-    app: "{{ .Values.name }}-redis"
+    app: "{{ .Values.APP_NAME }}-redis"
   type: ClusterIP
 ---
 apiVersion: apps/v1beta1
@@ -304,7 +304,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-user-service"
+        app: "{{ .Values.APP_NAME }}-user-service"
     spec:
       containers:
       - env:
@@ -322,7 +322,7 @@ metadata:
   annotations:
     loadbalancer.alauda.io/bind: '[{"container_port":8181,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":8181}]'
   labels:
-    app: "{{ .Values.name }}-user-service"
+    app: "{{ .Values.APP_NAME }}-user-service"
   name: user-service
 spec:
   ports:
@@ -330,7 +330,7 @@ spec:
     protocol: TCP
     targetPort: 8181
   selector:
-    app: "{{ .Values.name }}-user-service"
+    app: "{{ .Values.APP_NAME }}-user-service"
   type: ClusterIP
 
 ---
@@ -345,7 +345,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-discovery-service"
+        app: "{{ .Values.APP_NAME }}-discovery-service"
     spec:
       containers:
       - env:
@@ -363,7 +363,7 @@ metadata:
   annotations:
     loadbalancer.alauda.io/bind: '[{"container_port":8761,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":8761}]'
   labels:
-    app: "{{ .Values.name }}-discovery-service"
+    app: "{{ .Values.APP_NAME }}-discovery-service"
   name: discovery-service
 spec:
   ports:
@@ -371,7 +371,7 @@ spec:
     protocol: TCP
     targetPort: 8761
   selector:
-    app: "{{ .Values.name }}-discovery-service"
+    app: "{{ .Values.APP_NAME }}-discovery-service"
   type: ClusterIP
 ---
 apiVersion: apps/v1beta1
@@ -385,7 +385,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-edge-service"
+        app: "{{ .Values.APP_NAME }}-edge-service"
     spec:
       containers:
       - env:
@@ -403,7 +403,7 @@ metadata:
   annotations:
     loadbalancer.alauda.io/bind: '[{"container_port":9999,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":9999}]'
   labels:
-    app: "{{ .Values.name }}-edge-service"
+    app: "{{ .Values.APP_NAME }}-edge-service"
   name: edge-service
 spec:
   ports:
@@ -411,7 +411,7 @@ spec:
     protocol: TCP
     targetPort: 9999
   selector:
-    app: "{{ .Values.name }}-edge-service"
+    app: "{{ .Values.APP_NAME }}-edge-service"
   type: ClusterIP
 ---
 apiVersion: apps/v1beta1
@@ -425,7 +425,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-account-service"
+        app: "{{ .Values.APP_NAME }}-account-service"
     spec:
       containers:
       - env:
@@ -443,7 +443,7 @@ metadata:
   annotations:
     loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17005}]'
   labels:
-    app: "{{ .Values.name }}-account-service"
+    app: "{{ .Values.APP_NAME }}-account-service"
   name: account-service
 spec:
   ports:
@@ -451,7 +451,7 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    app: "{{ .Values.name }}-account-service"
+    app: "{{ .Values.APP_NAME }}-account-service"
   type: ClusterIP
 ---
 apiVersion: apps/v1beta1
@@ -465,7 +465,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-inventory-service"
+        app: "{{ .Values.APP_NAME }}-inventory-service"
     spec:
       containers:
       - env:
@@ -483,7 +483,7 @@ metadata:
   annotations:
     loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17004}]'
   labels:
-    app: "{{ .Values.name }}-inventory-service"
+    app: "{{ .Values.APP_NAME }}-inventory-service"
   name: inventory-service
 spec:
   ports:
@@ -491,7 +491,7 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    app: "{{ .Values.name }}-inventory-service"
+    app: "{{ .Values.APP_NAME }}-inventory-service"
   type: ClusterIP
 ---
 apiVersion: apps/v1beta1
@@ -505,7 +505,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-order-service"
+        app: "{{ .Values.APP_NAME }}-order-service"
     spec:
       containers:
       - env:
@@ -523,7 +523,7 @@ metadata:
   annotations:
     loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17003}]'
   labels:
-    app: "{{ .Values.name }}-order-service"
+    app: "{{ .Values.APP_NAME }}-order-service"
   name: order-service
 spec:
   ports:
@@ -531,7 +531,7 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    app: "{{ .Values.name }}-order-service"
+    app: "{{ .Values.APP_NAME }}-order-service"
   type: ClusterIP
 ---
 apiVersion: apps/v1beta1
@@ -545,7 +545,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-catalog-service"
+        app: "{{ .Values.APP_NAME }}-catalog-service"
     spec:
       containers:
       - env:
@@ -563,7 +563,7 @@ metadata:
   annotations:
     loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17002}]'
   labels:
-    app: "{{ .Values.name }}-catalog-service"
+    app: "{{ .Values.APP_NAME }}-catalog-service"
   name: catalog-service
 spec:
   ports:
@@ -571,7 +571,7 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    app: "{{ .Values.name }}-catalog-service"
+    app: "{{ .Values.APP_NAME }}-catalog-service"
   type: ClusterIP
 ---
 apiVersion: apps/v1beta1
@@ -585,7 +585,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-shopping-cart-service"
+        app: "{{ .Values.APP_NAME }}-shopping-cart-service"
     spec:
       containers:
       - env:
@@ -603,7 +603,7 @@ metadata:
   annotations:
     loadbalancer.alauda.io/bind: '[{"container_port":8080,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":17001}]'
   labels:
-    app: "{{ .Values.name }}-shopping-cart-service"
+    app: "{{ .Values.APP_NAME }}-shopping-cart-service"
   name: shopping-cart-service
 spec:
   ports:
@@ -611,7 +611,7 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    app: "{{ .Values.name }}-shopping-cart-service"
+    app: "{{ .Values.APP_NAME }}-shopping-cart-service"
   type: ClusterIP
 ---
 apiVersion: apps/v1beta1
@@ -625,7 +625,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ .Values.name }}-online-store-web"
+        app: "{{ .Values.APP_NAME }}-online-store-web"
     spec:
       containers:
       - env:
@@ -643,7 +643,7 @@ metadata:
   annotations:
     loadbalancer.alauda.io/bind: '[{"container_port":8787,"protocol":"tcp","name":"{{ .Values.ALB_NAME }}","port":8787}]'
   labels:
-    app: "{{ .Values.name }}-online-store-web"
+    app: "{{ .Values.APP_NAME }}-online-store-web"
   name: online-store-web
 spec:
   ports:
@@ -651,5 +651,5 @@ spec:
     protocol: TCP
     targetPort: 8787
   selector:
-    app: "{{ .Values.name }}-online-store-web"
+    app: "{{ .Values.APP_NAME }}-online-store-web"
   type: ClusterIP

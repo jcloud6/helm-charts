@@ -1,5 +1,5 @@
 # 应用名称
-name: spring-cloud-event-sourcing-example
+APP_NAME: spring-cloud-event-sourcing-example
 
 # 镜像地址
 Image_config: 10.0.160.9:5000/kbastani-config-service
