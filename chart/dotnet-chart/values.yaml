@@ -1,0 +1,4 @@
+#应用名称
+name: dotnet
+#镜像地址
+imageRegistry: caowendong/dotnet-test:v1
