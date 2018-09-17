@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dot-net
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: dotnet
+    spec:
+      containers:
+        - name: dotnet
+#          image: caowendong/dotnet-test:v1
+          image: "{{ .Values.imageRegistry }}"
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dotnet
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    name: dotnet
