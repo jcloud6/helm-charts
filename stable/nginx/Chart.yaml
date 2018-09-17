@@ -1,4 +1,4 @@
 name: Nginx
 version: 1.0.0
 description: Official build of Nginx.
-icon: http://{{GIT_HOST}}/root/helm-charts/raw/master/stable/nginx/icon/logo.png
+icon: http://{{GIT_HOST}}/root/helm-charts/raw/master/stable/nginx/icon/nginx.png

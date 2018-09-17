@@ -1,0 +1,5 @@
+#应用名称
+name: dotnet
+
+#镜像地址
+imageRegistry: "{{REGISTRY}}/dotnet-test:v1"
