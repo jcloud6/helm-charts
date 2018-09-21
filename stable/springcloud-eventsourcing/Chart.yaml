@@ -1,0 +1,4 @@
+name: springcloud-eventsourcing
+version: 1.0.0
+description: Example: SpringCloud-EventSourcing
+icon: http://{{GIT_HOST}}/root/helm-charts/raw/master/stable/springcloud-eventsourcing/icon/springcloud.jpg

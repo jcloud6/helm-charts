@@ -1,5 +1,5 @@
 # 应用名称
-APP_NAME: spring-cloud-event-sourcing-example
+APP_NAME: springcloud-eventsourcing-example
 
 # 镜像地址
 Image_config: "{{REGISTRY}}/kbastani-config-service"

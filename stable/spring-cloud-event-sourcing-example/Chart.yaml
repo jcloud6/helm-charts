@@ -1,4 +1,0 @@
-name: spring-cloud-event-sourcing-example
-version: 1.0.0
-description: spring-cloud-event-sourcing-example
-icon: http://{{GIT_HOST}}/root/helm-charts/raw/master/stable/dubbo/icon/springcloud.jpg
